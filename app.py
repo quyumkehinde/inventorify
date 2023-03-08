@@ -1,12 +1,15 @@
-from flask import Flask, render_template, redirect, jsonify, flash, request
-from webargs import fields, validate
+from flask import Flask, render_template, redirect, flash, request, session, abort
+from database import Database
+from webargs import fields
 from webargs.flaskparser import use_args
 from dotenv import load_dotenv
 import os
-from database import Database
+from werkzeug.security import generate_password_hash
+from exceptions import AlreadyExistError
 
 app = Flask(__name__)
 
+db = Database()
 load_dotenv()
 
 app.secret_key = os.getenv('SECRET_KEY', 'somesecretkey')
@@ -29,8 +32,18 @@ def register():
     'email': fields.Email(required=True),
     'password': fields.Str(required=True,)
 }, location='form')
-def register_post(request):
-    return redirect('/')
+def register_post(data):
+    try:
+        result = db.add_user(
+            data['business_name'],
+            data['email'],
+            generate_password_hash(data['password'])
+        )
+    except AlreadyExistError as e:
+        abort(e.message)
+
+    session['user_id'] = result.id
+    return redirect('/dashboard')
 
 
 @app.get('/login')
@@ -45,6 +58,11 @@ def login():
 }, location='form')
 def login_post(request):
     return redirect('/')
+
+
+@app.get('/dashboard')
+def login():
+    return render_template('auth/dashboard.html')
 
 
 @app.errorhandler(422)
