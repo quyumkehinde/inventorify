@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{%block title %}{% endblock %}</title>
+  <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="bg-white border-b border-gray-200 p-4 flex justify-between">
+    <a href="/" class="text-xl">Inventorify</a>
+
+    <nav>
+      <a href="/" class="m-2 p-2 active:text-blue-500">Home</a>
+      <a href="/register" class="m-2 p-2 active:text-blue-500">Register</a>
+      <a href="/login" class="m-2 p-2 active:text-blue-500">Login</a>
+    </nav>
+  </header>
+
+  <main class="min-h-screen w-full bg-gray-100 text-gray-700">
+    {% block main %}{% endblock %}
+  </main>
+
+  <footer class="bg-gray-800 text-white text-center py-5 mt-16">
+    &copy; Made with love by <a href="https://quyumkehinde.com" class="underline">Quyum</a>
+  </footer>
+
+</body>
+
+</html>

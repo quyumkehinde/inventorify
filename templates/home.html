@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}Inventorify | Inventory Management App{% endblock %}
+
+{% block main %}
+<div
+  class="flex flex-col justify-center items-center w-full bg-white w-full lg:px-20 px-10 lg:py-20 py-10 shadow-md bg-blue-100 text-center">
+  <h2 class="text-blue-500 lg:text-3xl text-2xl font-medium mt-10 mb-2">Welcome to Inventorify</h2>
+  <p>An inventory management app for your business.</p>
+  <a href="/register" class="bg-blue-500 text-white py-2 px-3 rounded inline-block mb-10 mt-5">Get Started</a>
+</div>
+
+<div>
+  <h2 class="text-center text-2xl mt-16 mb-2">How it works</h2>
+  <div class="flex justify-between flex-wrap">
+    <div class="lg:w-1/3 w-full p-4">
+      <div class="lg:p-6 p-4 border border-gray-300 shadow-md rounded">
+        <h3 class="text-xl mb-3">Effortlessly track inventory levels</h3>
+        <p>With our app, you can easily keep track of how much inventory you have on hand, so you never run out of
+          stock. Our intuitive interface lets you add and remove items with just a few clicks, and our powerful
+          reporting tools give you a real-time snapshot of your inventory levels.</p>
+      </div>
+    </div>
+    <div class="lg:w-1/3 w-full p-4">
+      <div class="lg:p-6 p-4 border border-gray-300 shadow-md rounded">
+        <h3 class="text-xl mb-3">Streamline order management</h3>
+        <p>With our app, you can easily keep track of how much inventory you have on hand, so you never run out of
+          stock. Our intuitive interface lets you add and remove items with just a few clicks, and our powerful
+          reporting tools give you a real-time snapshot of your inventory levels.</p>
+      </div>
+    </div>
+    <div class="lg:w-1/3 w-full p-4">
+      <div class="lg:p-6 p-4 border border-gray-300 shadow-md rounded">
+        <h3 class="text-xl mb-3">Effortlessly track inventory levels</h3>
+        <p>Say goodbye to manual order processing! Our app lets you manage all your orders in one place, automatically
+          updating inventory levels as you fulfill each order. With features like automatic restocking alerts and
+          customizable order statuses, you can streamline your entire order fulfillment process.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

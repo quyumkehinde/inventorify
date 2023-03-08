@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Login | Inventorify
+{% endblock %}
+
+{% block main %}
+<div class="flex min-h-screen items-center justify-center">
+  <div class="max-w-4xl bg-white w-11/12 sm:p-10 p-4 shadow-md">
+    <form method="post">
+      <h2 class="font-semibold text-2xl">Login</h2>
+      <div class="my-3">
+        <label for="email" class="block">
+          Email address
+          <span class="text-red-500">*</span>
+        </label>
+        <input name="email" id="username" class="border border-gray-300 rounded" required>
+      </div>
+      <div class="my-3">
+        <label for="password" class="block">
+          Password
+          <span class="text-red-500">*</span>
+        </label>
+        <input type="password" name="password" id="password" class="border border-gray-300 rounded" required>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white rounded px-3 py-2 my-3">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
