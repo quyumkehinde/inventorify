@@ -3,6 +3,7 @@ from webargs import fields, validate
 from webargs.flaskparser import use_args
 from dotenv import load_dotenv
 import os
+from database import Database
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ app.secret_key = os.getenv('SECRET_KEY', 'somesecretkey')
 
 @app.get('/')
 def index():
+
     return render_template('home.html')
 
 
