@@ -1,10 +1,14 @@
 from flask import Flask, render_template, redirect, jsonify, flash, request
 from webargs import fields, validate
 from webargs.flaskparser import use_args
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
-app.secret_key = 'super secret key'
+load_dotenv()
+
+app.secret_key = os.getenv('SECRET_KEY', 'somesecretkey')
 
 
 @app.get('/')
