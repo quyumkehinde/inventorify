@@ -1,5 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, jsonify, flash, request
+from webargs import fields, validate
+from webargs.flaskparser import use_args
+
 app = Flask(__name__)
+
+app.secret_key = 'super secret key'
 
 
 @app.get('/')
@@ -12,6 +17,33 @@ def register():
     return render_template('register.html')
 
 
+@app.post('/register')
+@use_args({
+    'business_name': fields.Str(required=True),
+    'email': fields.Email(required=True),
+    'password': fields.Str(required=True,)
+}, location='form')
+def register_post(request):
+    return redirect('/')
+
+
 @app.get('/login')
 def login():
     return render_template('login.html')
+
+
+@app.post('/login')
+@use_args({
+    'email': fields.Email(required=True),
+    'password': fields.Str(required=True,)
+}, location='form')
+def login_post(request):
+    return redirect('/')
+
+
+@app.errorhandler(422)
+@app.errorhandler(400)
+def handle_error(err):
+    messages = err.data.get('messages', ['Invalid request.'])
+    flash({'errors': messages})
+    return redirect(request.referrer)

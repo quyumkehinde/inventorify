@@ -1,12 +1,11 @@
 {% extends 'layout.html' %}
 
-{% block title %}
-Login | Inventorify
-{% endblock %}
+{% block title %}Login | Inventorify{% endblock %}
 
 {% block main %}
+{% with messages = get_flashed_messages() %}
 <div class="flex min-h-screen items-center justify-center">
-  <div class="max-w-4xl bg-white w-11/12 sm:p-10 p-4 shadow-md">
+  <div class="max-w-4xl w-11/12 bg-white sm:p-10 p-4 shadow-md">
     <form method="post">
       <h2 class="font-semibold text-2xl">Login</h2>
       <div class="my-3">
@@ -14,7 +13,12 @@ Login | Inventorify
           Email address
           <span class="text-red-500">*</span>
         </label>
-        <input name="email" id="username" class="border border-gray-300 rounded" required>
+        <input type="email" name="email" id="email" class="border border-gray-300 rounded" required>
+        {% if messages and messages[0] and messages[0].errors and messages[0].errors.form.email %}
+        <span class="text-red-500">
+          {{ messages[0].errors.form.email[0] }}
+        </span>
+        {% endif %}
       </div>
       <div class="my-3">
         <label for="password" class="block">
@@ -22,9 +26,15 @@ Login | Inventorify
           <span class="text-red-500">*</span>
         </label>
         <input type="password" name="password" id="password" class="border border-gray-300 rounded" required>
+        {% if messages and messages[0] and messages[0].errors and messages[0].errors.form.password %}
+        <span class="text-red-500">
+          {{ messages[0].errors.form.password[0] }}
+        </span>
+        {% endif %}
       </div>
       <button type="submit" class="bg-blue-500 text-white rounded px-3 py-2 my-3">Login</button>
     </form>
   </div>
 </div>
+{% endwith %}
 {% endblock %}
