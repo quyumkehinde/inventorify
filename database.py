@@ -18,11 +18,17 @@ class Database():
         Base.metadata.create_all(self.engine)
 
     def add_user(self, business_name, email, password):
+        user = User(
+            business_name=business_name,
+            email=email,
+            password=password
+        )
         try:
-            self.session.add(
-                User(business_name=business_name, email=email, password=password))
+            self.session.add(user)
             self.save()
+            return user
         except IntegrityError:
+            self.session.rollback()
             raise AlreadyExistError('User already exist.')
 
     def add_category(self, name, user_id):
@@ -30,6 +36,7 @@ class Database():
             self.session.add(Category(name=name, user_id=user_id))
             self.save()
         except IntegrityError:
+            self.session.rollback()
             raise AlreadyExistError('Category already exist.')
 
     def add_product(self, name, user_id, category_id):
@@ -38,4 +45,5 @@ class Database():
                 Product(name=name, user_id=user_id, category_id=category_id))
             self.save()
         except IntegrityError:
+            self.session.rollback()
             raise AlreadyExistError('Product already exist.')

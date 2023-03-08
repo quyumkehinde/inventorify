@@ -23,7 +23,7 @@ def index():
 
 @app.get('/register')
 def register():
-    return render_template('register.html')
+    return render_template('register.j2')
 
 
 @app.post('/register')
@@ -40,15 +40,17 @@ def register_post(data):
             generate_password_hash(data['password'])
         )
     except AlreadyExistError as e:
-        abort(e.message)
+        flash(e.message, 'app_error')
+        return redirect(request.referrer)
 
+    print(result)
     session['user_id'] = result.id
     return redirect('/dashboard')
 
 
 @app.get('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.j2')
 
 
 @app.post('/login')
@@ -61,13 +63,13 @@ def login_post(request):
 
 
 @app.get('/dashboard')
-def login():
-    return render_template('auth/dashboard.html')
+def dashboard():
+    return render_template('auth/dashboard.j2')
 
 
 @app.errorhandler(422)
 @app.errorhandler(400)
 def handle_error(err):
     messages = err.data.get('messages', ['Invalid request.'])
-    flash({'errors': messages})
+    flash({'errors': messages}, 'validation_error')
     return redirect(request.referrer)
