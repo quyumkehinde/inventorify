@@ -17,7 +17,6 @@ app.secret_key = os.getenv('SECRET_KEY', 'somesecretkey')
 
 @app.get('/')
 def index():
-
     return render_template('home.html')
 
 
@@ -64,7 +63,9 @@ def login_post(request):
 
 @app.get('/dashboard')
 def dashboard():
-    return render_template('auth/dashboard.j2')
+    if not session.get('user_id'):
+        return redirect('/login')
+    return render_template('auth/dashboard.html')
 
 
 @app.errorhandler(422)
