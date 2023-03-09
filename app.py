@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, flash, request, session, abort
+from flask import Flask, render_template, redirect, flash, request, session
 from database import Database
 from webargs import fields
 from webargs.flaskparser import use_args
@@ -89,14 +89,73 @@ def dashboard():
     )
 
 
-@app.post('/logout')
+@app.get('/categories')
+def categories():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    categories = db.fetch_categories(user_id)
+    return render_template(
+        'auth/categories.html',
+        categories=enumerate(categories)
+    )
+
+
+@app.post('/categories')
+@use_args({
+    'name': fields.Str(required=True, validate=lambda x: len(x) > 1),
+}, location='form')
+def categories_post(data):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    try:
+        db.add_category(data['name'], user_id)
+    except AlreadyExistError as e:
+        flash(e.message, 'app_error')
+        return redirect(request.referrer)
+    flash('Category added successfully.', 'success')
+    return redirect(request.referrer)
+
+
+@app.post('/categories/<id>')
+def categories_delete(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    try:
+        db.delete_category(int(id), user_id)
+    except Exception:
+        flash('Unable to delete. Please try again.', 'app_error')
+        return redirect(request.referrer)
+    flash('Category deleted successfully.', 'success')
+    return redirect(request.referrer)
+
+
+@app.get('/products')
+def products():
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    categories = db.fetch_categories(user_id)
+    return render_template(
+        'auth/products.html',
+        categories=categories
+    )
+
+
+@ app.post('/logout')
 def logout():
     session.pop('user_id', None)
     return redirect('/')
 
 
-@app.errorhandler(422)
-@app.errorhandler(400)
+@ app.errorhandler(422)
+@ app.errorhandler(400)
 def handle_error(err):
     messages = err.data.get('messages', ['Invalid request.'])
     flash({'errors': messages}, 'validation_error')

@@ -1,0 +1,156 @@
+{% extends 'auth/layout.j2' %}
+
+{% block title %}Products | Inventorify{% endblock %}
+
+{% block main %}
+
+<div class="m-3 text-lg">
+    Products
+</div>
+
+{% with messages = get_flashed_messages(category_filter=["validation_error"]) %}
+<section class="flex justify-center">
+    <div class="w-full lg:p-8 p-4 bg-white mt-2">
+        <h3 class="text-xl">Add New Product</h3>
+        <form method="POST" action="/products" class="mt-5" enctype="multipart/form-data">
+            {% with errors = get_flashed_messages(category_filter=["app_error"]) %}
+            {% if errors %}
+            <span class="my-3 text-red-500">{{ errors[0] }}</span>
+            {% endif %}
+            {% endwith %}
+            <div class="my-3">
+                <label class="text-sm block">
+                    Name <span class="text-red-500">*</span>
+                </label>
+                <div class="mt-2">
+                    <input name="name" type="text" class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
+                </div>
+                <!-- @if ($errors->first_name)
+                                <span class="my-5 text-red-500 text-sm">./\/\ $errors->first('first_name') }}</span>
+                                @endif -->
+            </div>
+
+            <div class="my-3">
+                <label class="text-sm block">
+                    Price($) <span class="text-red-500">*</span>
+                </label>
+                <div class="mt-2">
+                    <input name="price" type="number" class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
+                </div>
+                <!-- @if ($errors->first_name)
+                                            <span class="my-5 text-red-500 text-sm">./\/\ $errors->first('first_name') }}</span>
+                                            @endif -->
+            </div>
+
+            <div class="my-3">
+                <label class="text-sm block">
+                    Quantity <span class="text-red-500">*</span>
+                </label>
+                <div class="mt-2">
+                    <input name="quantity" type="number" class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
+                </div>
+                <!-- @if ($errors->election_id)
+                    <span class="my-5 text-red-500 text-sm">./\/\ $errors->first('election_id') }}</span>
+                    @endif -->
+            </div>
+            <div class="my-3">
+                <label class="text-sm block">
+                    Category <span class="text-red-500">*</span>
+                </label>
+                <div class="mt-2">
+                    <select name="category_id" class="px-2 py-1 md:w-1/2 border border-gray-300 rounded" required>
+                        <option value="" selected disabled>--Select--</option>
+                        {% for category in categories %}
+                        <option value={{category.id}}> {{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- @if ($errors->position_id_id)
+                    <span class="my-5 text-red-500 text-sm">./\/\ $errors->first('position_id') }}</span>
+                    @endif -->
+            </div>
+            <div class="mt-6">
+                <button type='submit' class="p-2 bg-indigo-600 text-white text-sm rounded">Add Product</button>
+            </div>
+        </form>
+        <div class='mt-16 lg:flex lg:items-center'>
+            <div class="lg:flex-auto">
+                <h3 class='text-xl mt-8'>All Products</h3>
+                <p class="mt-2 text-sm text-gray-700">
+                    Here is a list of all products.
+                </p>
+            </div>
+        </div>
+        <div class="mt-8 flex flex-col">
+            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    {% if not products %}
+                    <p class="text-gray-700 text-md text-center">
+                        You are yet to add any product.
+                    </p>
+                    {% else %}
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 lg:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-300">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="py-3.5 px-4 text-left text-sm font-semibold">
+                                        ID
+                                    </th>
+                                    <th scope="col" class="py-3.5 px-4 text-left text-sm font-medium">
+                                        Name
+                                    </th>
+                                    <th scope="col" class="py-3.5 px-4 text-left text-sm font-medium">
+                                        Quantity
+                                    </th>
+                                    <th scope="col" class="py-3.5 px-4 text-left text-sm font-medium">
+                                        Price
+                                    </th>
+                                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                        <span class="sr-only text-red-500">Delete</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                <!-- @foreach ($contestants as $key => $contestant)
+                                <tr class=./\/\ $key % 2===0 ? null : 'bg-gray-50' }}>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->id}}
+                                    </td>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->first_name}}
+                                    </td>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->last_name}}
+                                    </td>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->email}}
+                                    </td>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->position?->name}}
+                                    </td>
+                                    <td class="whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                        ./\/\$contestant->election_id}}
+                                    </td>
+                                    <td
+                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <form method="post" action="./\/\ route('deleteContestant', $contestant->id) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="text-red-600 hover:text-indigo-900 inline-block pl-5">
+                                                Delete<span class="sr-only">, ./\/\$contestant->first_name}}</span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach -->
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endwith %}
+{% endblock %}

@@ -28,10 +28,6 @@ class User(Base):
     products = relationship('Product', back_populates='user')
     categories = relationship('Category', back_populates='user')
 
-    # def __getitem__(self, field):
-    #     if field == 'courses':
-    #         return self.courses
-    #     return self.__dict__[field]
     def __repr__(self):
         return f'<User(id={self.id}, name={self.business_name}, email={self.email})>'
 

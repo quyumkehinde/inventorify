@@ -1,0 +1,101 @@
+{% extends 'auth/layout.j2' %}
+
+{% block title %}Categories | Inventorify{% endblock %}
+
+{% block main %}
+
+<div class="m-3 text-lg">
+    Categories
+</div>
+
+{% with v_error = get_flashed_messages(category_filter=["validation_error"]) %}
+<section class="flex justify-center">
+    <div class="w-full lg:p-8 p-4 bg-white mt-2">
+        <h3 class="text-xl">Add New Category</h3>
+        <form method="POST" action="/categories" class="mt-5" enctype="multipart/form-data">
+            {% with messages = get_flashed_messages(with_categories=True, category_filter=["app_error", "success"]) %}
+            {% for category, message in messages %}
+            {% if category == "success" %}
+            <span class="my-3 text-green-500">{{ message }}</span>
+            {% else %}
+            <span class="my-3 text-red-500">{{ message }}</span>
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+
+            <div class="my-3">
+                <label class="text-sm block">
+                    Name <span class="text-red-500">*</span>
+                </label>
+                <div class="mt-2">
+                    <input name="name" type="text" class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
+                    {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.name %}
+                    <span class="text-red-500">
+                        {{ v_error[0].errors.form.name[0] }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-6">
+                <button type='submit' class="p-2 bg-indigo-600 text-white text-sm rounded">Add Category</button>
+            </div>
+        </form>
+        <div class='mt-16 lg:flex lg:items-center'>
+            <div class="lg:flex-auto">
+                <h3 class='text-xl mt-8'>All Categories</h3>
+                <p class="mt-2 text-sm text-gray-700">
+                    Here is a list of all categories.
+                </p>
+            </div>
+        </div>
+        <div class="mt-8 flex flex-col">
+            <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                    {% if not categories %}
+                    <p class="text-gray-700 text-md text-center">
+                        You are yet to add any category.
+                    </p>
+                    {% else %}
+                    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 lg:rounded-lg">
+                        <div class="min-w-full divide-y divide-gray-300">
+                            <div class="flex justify-between lg:px-8 px-4">
+                                <h3 scope="col" class="py-3.5 text-sm font-medium">
+                                    ID
+                                </h3>
+                                <h3 scope="col" class="py-3.5 text-sm font-medium">
+                                    Name
+                                </h3>
+                                <h3 scope="col" class="py-3.5 text-sm font-medium">
+                                    Actions
+                                </h3>
+                            </div>
+                            <div class="bg-white">
+                                {% for key, category in categories %}
+                                <div
+                                    class="{{ 'bg-gray-100' if key % 2==0 else '' }} flex justify-between lg:px-8 px-4">
+                                    <h3 class="whitespace-nowrap py-4 text-sm text-gray-900">
+                                        {{ category.id }}
+                                    </h3>
+                                    <h3 class="whitespace-nowrap py-4 text-sm text-gray-900">
+                                        {{ category.name }}
+                                    </h3>
+                                    <h3 class="relative whitespace-nowrap py-4 text-right text-sm">
+                                        <form method="post" action="/categories/{{category.id}}">
+                                            <button type="submit" class="text-red-600 inline-block">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </h3>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endwith %}
+{% endblock %}

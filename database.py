@@ -34,17 +34,33 @@ class Database():
     def fetch_user(self, email):
         return (
             self.session.query(User)
-            .filter(User.email == email)
-            .first()
+                .filter(User.email == email)
+                .first()
         )
 
     def add_category(self, name, user_id):
+        category = Category(name=name, user_id=user_id)
         try:
-            self.session.add(Category(name=name, user_id=user_id))
+            self.session.add(category)
             self.save()
         except IntegrityError:
             self.session.rollback()
             raise AlreadyExistError('Category already exist.')
+        return category
+
+    def fetch_categories(self, user_id):
+        return (
+            self.session.query(Category)
+                .filter(Category.user_id == user_id)
+        )
+
+    def delete_category(self, category_id, user_id):
+        return (
+            self.session.query(Category)
+                .filter(Category.id == category_id)
+                .filter(Category.user_id == user_id)
+                .delete()
+        )
 
     def add_product(self, name, user_id, category_id):
         try:
