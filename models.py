@@ -1,4 +1,4 @@
-from sqlalchemy import String, Integer, Column, ForeignKey
+from sqlalchemy import String, Integer, Column, ForeignKey, Float
 from sqlalchemy.orm import relationship, declarative_base
 
 Base = declarative_base()
@@ -8,6 +8,8 @@ class Product(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True)
+    price = Column(Float, nullable=False)
+    quantity = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('users.id'))
     category_id = Column(Integer, ForeignKey('categories.id'))
     user = relationship('User', back_populates='products')

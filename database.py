@@ -47,3 +47,28 @@ class Database():
         except IntegrityError:
             self.session.rollback()
             raise AlreadyExistError('Product already exist.')
+
+    def fetch_products_and_categories_count(self, user_id):
+        total_products = (
+            self.session.query(Product)
+                .filter(Product.user_id == user_id)
+                .count()
+        )
+        products_out_of_stock = (
+            self.session.query(Product)
+                .filter(Product.user_id == user_id)
+                .filter(Product.quantity == 0)
+                .count()
+        )
+        total_categories = (
+            self.session.query(Category)
+                .filter(Category.user_id == user_id)
+                .count()
+        )
+        empty_categories = (
+            self.session.query(Category)
+                .where(~Category.products.any())
+                .count()
+        )
+
+        return ((total_products, products_out_of_stock), (total_categories, empty_categories))

@@ -63,9 +63,27 @@ def login_post(request):
 
 @app.get('/dashboard')
 def dashboard():
-    if not session.get('user_id'):
+    user_id = session.get('user_id')
+    if not user_id:
         return redirect('/login')
-    return render_template('auth/dashboard.html')
+    (
+        (total_products, products_out_of_stock),
+        (total_categories, empty_categories)
+    ) = db.fetch_products_and_categories_count(user_id)
+
+    return render_template(
+        'auth/dashboard.html',
+        total_products=total_products,
+        products_out_of_stock=products_out_of_stock,
+        total_categories=total_categories,
+        empty_categories=empty_categories
+    )
+
+
+@app.post('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect('/')
 
 
 @app.errorhandler(422)
