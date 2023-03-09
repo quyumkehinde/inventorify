@@ -4,7 +4,7 @@ from webargs import fields
 from webargs.flaskparser import use_args
 from dotenv import load_dotenv
 import os
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from exceptions import AlreadyExistError
 
 app = Flask(__name__)
@@ -57,8 +57,17 @@ def login():
     'email': fields.Email(required=True),
     'password': fields.Str(required=True,)
 }, location='form')
-def login_post(request):
-    return redirect('/')
+def login_post(data):
+    user = db.fetch_user(data['email'])
+    is_password_valid = check_password_hash(
+        user.password if user else '',
+        data['password']
+    )
+    if not user or not is_password_valid:
+        flash('Invalid email address or password.', 'app_error')
+        return redirect(request.referrer)
+    session['user_id'] = user.id
+    return redirect('/dashboard')
 
 
 @app.get('/dashboard')

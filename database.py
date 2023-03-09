@@ -31,6 +31,13 @@ class Database():
             self.session.rollback()
             raise AlreadyExistError('User already exist.')
 
+    def fetch_user(self, email):
+        return (
+            self.session.query(User)
+            .filter(User.email == email)
+            .first()
+        )
+
     def add_category(self, name, user_id):
         try:
             self.session.add(Category(name=name, user_id=user_id))

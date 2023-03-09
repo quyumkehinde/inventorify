@@ -10,7 +10,7 @@
       <h2 class="font-semibold text-2xl">Login</h2>
       {% with errors = get_flashed_messages(category_filter=["app_error"]) %}
         {% if errors %}
-          {{ errors[0] }}
+          <span class="my-3 text-red-500">{{ errors[0] }}</span>
         {% endif %}
       {% endwith %}
       <div class="my-3">
