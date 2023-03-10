@@ -14,13 +14,13 @@
     <h3 class="text-xl">Add New Product</h3>
     <form method="POST" action="/products/edit/{{product.id}}" class="mt-5" enctype="multipart/form-data">
       {% with messages = get_flashed_messages(with_categories=True, category_filter=["app_error", "success"]) %}
-      {% for category, message in messages %}
-      {% if category == "success" %}
-      <span class="my-3 text-green-500">{{ message }}</span>
-      {% else %}
-      <span class="my-3 text-red-500">{{ message }}</span>
-      {% endif %}
-      {% endfor %}
+        {% for category, message in messages %}
+          {% if category == "success" %}
+            <span class="my-3 text-green-500">{{ message }}</span>
+          {% else %}
+            <span class="my-3 text-red-500">{{ message }}</span>
+          {% endif %}
+        {% endfor %}
       {% endwith %}
 
       <div class="my-3">
@@ -32,9 +32,9 @@
             required />
         </div>
         {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.name %}
-        <span class="text-red-500">
-          {{ v_error[0].errors.form.name[0] }}
-        </span>
+          <span class="text-red-500">
+            {{ v_error[0].errors.form.name[0] }}
+          </span>
         {% endif %}
       </div>
 
@@ -47,9 +47,9 @@
             required />
         </div>
         {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.price %}
-        <span class="text-red-500">
-          {{ v_error[0].errors.form.price[0] }}
-        </span>
+          <span class="text-red-500">
+            {{ v_error[0].errors.form.price[0] }}
+          </span>
         {% endif %}
       </div>
 
@@ -61,9 +61,9 @@
           <input name="quantity" value={{ product.quantity }} type="number"
             class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
           {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.quantity %}
-          <span class="text-red-500">
-            {{ v_error[0].errors.form.quantity[0] }}
-          </span>
+            <span class="text-red-500">
+              {{ v_error[0].errors.form.quantity[0] }}
+            </span>
           {% endif %}
         </div>
       </div>
@@ -74,15 +74,15 @@
         <div class="mt-2">
           <select name="category_id" class="px-2 py-1 md:w-1/2 border border-gray-300 rounded" required>
             {% for category in categories %}
-            <option value="{{category.id}}" {{ 'selected' if category.id==product.category_id else '' }}>
-              {{ category.name}}
-            </option>
+              <option value="{{category.id}}" {{ 'selected' if category.id==product.category_id else '' }}>
+                {{ category.name}}
+              </option>
             {% endfor %}
           </select>
           {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.category_id %}
-          <span class=" text-red-500">
-            {{ v_error[0].errors.form.category_id[0] }}
-          </span>
+            <span class=" text-red-500">
+              {{ v_error[0].errors.form.category_id[0] }}
+            </span>
           {% endif %}
         </div>
       </div>

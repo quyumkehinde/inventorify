@@ -14,13 +14,13 @@
     <h3 class="text-xl mb-5">Edit Category</h3>
     <form method="post" action="/categories/edit/{{category.id}}">
       {% with messages = get_flashed_messages(with_categories=True, category_filter=["app_error", "success"]) %}
-      {% for category, message in messages %}
-      {% if category == "success" %}
-      <span class="my-3 text-green-500">{{ message }}</span>
-      {% else %}
-      <span class="my-3 text-red-500">{{ message }}</span>
-      {% endif %}
-      {% endfor %}
+        {% for category, message in messages %}
+          {% if category == "success" %}
+            <span class="my-3 text-green-500">{{ message }}</span>
+          {% else %}
+            <span class="my-3 text-red-500">{{ message }}</span>
+          {% endif %}
+        {% endfor %}
       {% endwith %}
 
       <div class="my-3">
@@ -30,9 +30,9 @@
         <div class="mt-2">
           <input name="name" value="{{category.name}}" class="px-2 py-1 lg:w-1/2 border border-gray-300" required />
           {% if v_error and v_error[0] and v_error[0].errors and v_error[0].errors.form.name %}
-          <span class="text-red-500">
-            {{ v_error[0].errors.form.name[0] }}
-          </span>
+            <span class="text-red-500">
+              {{ v_error[0].errors.form.name[0] }}
+            </span>
           {% endif %}
         </div>
       </div>

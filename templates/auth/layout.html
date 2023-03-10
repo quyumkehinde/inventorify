@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventorify | Inventory Management App</title>
+  <title>{%block title %}{% endblock %}</title>
   <script defer src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" />
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
@@ -14,16 +14,13 @@
 <body>
 
   <main class="min-h-screen w-full bg-gray-100 text-gray-700" x-data="layout">
-    <!-- header -->
     <header class="flex w-full items-center justify-between border-b-2 border-gray-200 bg-white p-2">
-      <!-- logo -->
       <div class="flex items-center space-x-2">
         <button type="button" class="text-3xl" @click="asideOpen = !asideOpen"><i class="bx bx-menu"></i></button>
         <a href="/" class="text-xl">Inventorify</a>
       </div>
-      <div
-        class="h-9 w-9 overflow-hidden rounded-full">
-        <img src="https://plchldr.co/i/40x40?bg=111111" alt="plchldr.co" />
+      <div class="h-9 w-9 overflow-hidden rounded-full">
+        <img src="https://plchldr.co/i/40x40?bg=111111" />
       </div>
     </header>
 
@@ -59,6 +56,10 @@
       </div>
     </div>
   </main>
+
+  <footer class="bg-gray-800 text-white text-center py-5 mt-16">
+    &copy; Made with love by <a href="https://quyumkehinde.com" class="underline">Quyum</a>
+  </footer>
 
   <script>
     document.addEventListener("alpine:init", () => {
