@@ -42,7 +42,6 @@ def register_post(data):
         flash(e.message, 'app_error')
         return redirect(request.referrer)
 
-    print(result)
     session['user_id'] = result.id
     return redirect('/dashboard')
 
@@ -172,14 +171,51 @@ def products():
     if not user_id:
         return redirect('/login')
 
+    products = db.fetch_products(user_id)
     categories = db.fetch_categories(user_id)
     return render_template(
         'auth/products.html',
+        products=enumerate(products),
         categories=categories
     )
 
 
-@ app.post('/logout')
+@app.post('/products')
+@use_args({
+    'name': fields.Str(required=True, validate=lambda x: len(x) > 1),
+    'price': fields.Int(required=True),
+    'quantity': fields.Int(required=True),
+    'category_id': fields.Int(required=True)
+}, location='form')
+def products_post(data):
+
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    category = db.fetch_category(user_id, data['category_id'])
+    if not category:
+        flash({'errors': {
+            'form': {'category_id': ['The category does not exist']}
+        }}, 'validation_error')
+        return redirect(request.referrer)
+
+    try:
+        db.add_product(
+            data['name'],
+            data['price'],
+            data['quantity'],
+            data['category_id'],
+            user_id
+        )
+    except AlreadyExistError as e:
+        flash(e.message, 'app_error')
+        return redirect(request.referrer)
+    flash('Product added successfully.', 'success')
+    return redirect(request.referrer)
+
+
+@app.post('/logout')
 def logout():
     session.pop('user_id', None)
     return redirect('/')

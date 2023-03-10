@@ -81,14 +81,27 @@ class Database():
                 .delete()
         )
 
-    def add_product(self, name, user_id, category_id):
+    def add_product(self, name, price, quantity, category_id, user_id):
+        product = Product(
+            name=name,
+            price=price,
+            quantity=quantity,
+            category_id=category_id,
+            user_id=user_id
+        )
         try:
-            self.session.add(
-                Product(name=name, user_id=user_id, category_id=category_id))
+            self.session.add(product)
             self.save()
         except IntegrityError:
             self.session.rollback()
             raise AlreadyExistError('Product already exist.')
+        return product
+
+    def fetch_products(self, user_id):
+        return (
+            self.session.query(Product)
+                .filter(Product.user_id == user_id)
+        )
 
     def fetch_products_and_categories_count(self, user_id):
         total_products = (
