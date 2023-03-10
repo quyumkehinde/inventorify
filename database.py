@@ -127,6 +127,14 @@ class Database():
                 .filter(Product.user_id == user_id)
         )
 
+    def delete_product(self, product_id, user_id):
+        return (
+            self.session.query(Product)
+                .filter(Product.id == product_id)
+                .filter(Product.user_id == user_id)
+                .delete()
+        )
+
     def fetch_products_and_categories_count(self, user_id):
         total_products = (
             self.session.query(Product)

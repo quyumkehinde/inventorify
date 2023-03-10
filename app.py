@@ -269,6 +269,21 @@ def product_put(data, id):
     return redirect(request.referrer)
 
 
+@app.post('/products/delete/<id>')
+def products_delete(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    try:
+        db.delete_product(int(id), user_id)
+    except Exception:
+        flash('Unable to delete. Please try again.', 'app_error')
+        return redirect(request.referrer)
+    flash('Product deleted successfully.', 'success')
+    return redirect(request.referrer)
+
+
 @app.post('/logout')
 def logout():
     session.pop('user_id', None)
