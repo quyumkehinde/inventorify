@@ -119,6 +119,19 @@ def categories_post(data):
     return redirect(request.referrer)
 
 
+@app.get('/categories/edit/<id>')
+def categories_edit(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    category = db.fetch_category(user_id, id)
+    return render_template(
+        'auth/categories-edit.html',
+        category=category
+    )
+
+
 @app.post('/categories/edit/<id>')
 @use_args({
     'name': fields.Str(required=True, validate=lambda x: len(x) > 1),
@@ -150,19 +163,6 @@ def categories_delete(id):
         return redirect(request.referrer)
     flash('Category deleted successfully.', 'success')
     return redirect(request.referrer)
-
-
-@app.get('/categories/edit/<id>')
-def categories_edit(id):
-    user_id = session.get('user_id')
-    if not user_id:
-        return redirect('/login')
-
-    category = db.fetch_category(user_id, id)
-    return render_template(
-        'auth/categories-edit.html',
-        category=category
-    )
 
 
 @app.get('/products')
@@ -215,14 +215,68 @@ def products_post(data):
     return redirect(request.referrer)
 
 
+@app.get('/products/edit/<id>')
+def products_edit(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    product = db.fetch_product(user_id, id)
+    categories = db.fetch_categories(user_id)
+
+    if not product:
+        return redirect('/products')
+
+    return render_template(
+        'auth/products-edit.html',
+        product=product,
+        categories=categories,
+    )
+
+
+@app.post('/products/edit/<id>')
+@use_args({
+    'name': fields.Str(required=True, validate=lambda x: len(x) > 1),
+    'price': fields.Float(required=True),
+    'quantity': fields.Int(required=True),
+    'category_id': fields.Int(required=True)
+}, location='form')
+def product_put(data, id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    category = db.fetch_category(user_id, data['category_id'])
+    if not category:
+        flash({'errors': {
+            'form': {'category_id': ['The category does not exist']}
+        }}, 'validation_error')
+        return redirect(request.referrer)
+
+    try:
+        db.update_product(
+            int(id),
+            data['name'],
+            data['price'],
+            data['quantity'],
+            data['category_id'],
+            user_id
+        )
+    except AlreadyExistError as e:
+        flash(e.message, 'app_error')
+        return redirect(request.referrer)
+    flash('Product updated successfully.', 'success')
+    return redirect(request.referrer)
+
+
 @app.post('/logout')
 def logout():
     session.pop('user_id', None)
     return redirect('/')
 
 
-@ app.errorhandler(422)
-@ app.errorhandler(400)
+@app.errorhandler(422)
+@app.errorhandler(400)
 def handle_error(err):
     messages = err.data.get('messages', ['Invalid request.'])
     flash({'errors': messages}, 'validation_error')

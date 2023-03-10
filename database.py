@@ -97,6 +97,30 @@ class Database():
             raise AlreadyExistError('Product already exist.')
         return product
 
+    def update_product(self, product_id, name, price, quantity, category_id, user_id):
+        try:
+            (self.session.query(Product)
+                .filter(Product.id == product_id)
+                .filter(Product.user_id == user_id)
+                .update({
+                    Product.name: name,
+                    Product.price: price,
+                    Product.quantity: quantity,
+                    Product.category_id: category_id,
+                }))
+            self.save()
+        except IntegrityError:
+            self.session.rollback()
+            raise AlreadyExistError('Category already exist.')
+
+    def fetch_product(self, user_id, product_id):
+        return (
+            self.session.query(Product)
+                .filter(Product.user_id == user_id)
+                .filter(Product.id == product_id)
+                .first()
+        )
+
     def fetch_products(self, user_id):
         return (
             self.session.query(Product)
