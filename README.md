@@ -28,4 +28,4 @@ The application has been deployed online using [Render](https://render.com). You
 
 ## Using the app
 
-I've recorded a video providing a detailed step-by-step guide on how to use the app, you can check it out on [here](https://www.awesomescreenshot.com/video/15485807)
+I've recorded a video providing a detailed step-by-step guide on how to use the app, you can check it out on [here](https://www.awesomescreenshot.com/video/15485807?key=17fff88e2e4f2c2192410d26526abfdb)
