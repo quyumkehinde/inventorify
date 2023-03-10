@@ -71,6 +71,7 @@ class Database():
         return (
             self.session.query(Category)
                 .filter(Category.user_id == user_id)
+                .all()
         )
 
     def delete_category(self, category_id, user_id):
@@ -125,6 +126,7 @@ class Database():
         return (
             self.session.query(Product)
                 .filter(Product.user_id == user_id)
+                .all()
         )
 
     def delete_product(self, product_id, user_id):

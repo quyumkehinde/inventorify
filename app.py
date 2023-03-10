@@ -95,9 +95,12 @@ def categories():
         return redirect('/login')
 
     categories = db.fetch_categories(user_id)
+    if categories:
+        categories = enumerate(categories)
+
     return render_template(
         'auth/categories.html',
-        categories=enumerate(categories)
+        categories=categories
     )
 
 
@@ -172,10 +175,13 @@ def products():
         return redirect('/login')
 
     products = db.fetch_products(user_id)
+    if products:
+        products = enumerate(products)
+
     categories = db.fetch_categories(user_id)
     return render_template(
         'auth/products.html',
-        products=enumerate(products),
+        products=products,
         categories=categories
     )
 
