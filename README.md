@@ -1,44 +1,33 @@
-# Multi-model CRUD App
+# Inventorify
 
-Design and build a web application using Flask or Express.
+View live version [here](https://inventorify-7pge.onrender.com/products)
 
-## Requirements
+Inventorify is an inventory management web application built with the Python Flask framework. It allows businesses keep track of their product inventory by providing an intuitive interface for them to manage and monitor their products.
+
+## Database Schema
+
+The database schema consists of three tables:
 
 Your application
 
-- must use Flask or Express
-- must use a relational database (Postgresql is recommended, if you would like to deploy your application. SQLite3 is also fine!)
-- must have multiple, related database models
-- must have features to Create, Read, Update, and Delete some of those models from a web interface
-- must be designed such that it works properly on different devices (desktop and mobile)
+- **users**: represents users of the application. Each user has a business name, email address, and password. A user can create multiple categories and products.
+- **products**: represents products in the inventory. Each product has a name, price, quantity, user_id, and category_id.
+- **categories**: represents the categories of products in the inventory. Each category has a name and user_id.
 
-You must also include a README.md file that
-- explains what your app does
-- explains the tables in your schema
-- explains how to set the app up and run it locally
+## Setting up the app
 
-## Optional components
+To set up the application locally, follow these steps:
 
-The following are optional, but not required:
+- Install Python 3.x on your computer if it's not already installed.
+- Clone this repository to your local machine.
+- Install the required packages by running the command `pip install -r requirements.txt`.
+- Start the app by running `flask run`
+- And voila! The application should be running on your machine at `http://127.0.0.1:5000`
 
-- you may use an ORM library
-- you may use a CSS framework
-- you may use an API
-- you may have users and authentication
-- you may use  a library to manage authentication and authorization
-- you may deploy your application to the web
+## Live website
 
-## Recommendations
+The application has been deployed online using [Render](https://render.com). You can access the live version of the website [here](https://inventorify-7pge.onrender.com/products)
 
-The possibilities for your application are wide and varied. Choosing a scope for your project that you can complete within the time is key.
+## Using the app
 
-Before you start coding, you should:
-- write out a list of pages in your planned application
-- write the routes associated with those pages and their actions
-- write out the plan for the models in your schema
-
-You are also highly encouraged to build a scoped-down **Minimum Viable Product** (MVP) first, then add more features after you have it working.
-
-## Notes
-
-- If you choose to start from a Flask or Express starter code template (like [flask-starter](https://github.com/ksh7/flask-starter) or [express-postgres-boilerplate](https://github.com/mateo-io/express-postgres-boilerplate)) you **must** mention it in your README file.
+I've recorded a video providing a detailed step-by-step guide on how to use the app, you can [check it out on Youtube](https://youtube.com)
