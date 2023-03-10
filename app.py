@@ -120,7 +120,25 @@ def categories_post(data):
     return redirect(request.referrer)
 
 
-@app.post('/categories/<id>')
+@app.post('/categories/edit/<id>')
+@use_args({
+    'name': fields.Str(required=True, validate=lambda x: len(x) > 1),
+}, location='form')
+def categories_put(data, id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    try:
+        db.update_category(int(id), data['name'], user_id)
+    except AlreadyExistError as e:
+        flash(e.message, 'app_error')
+        return redirect(request.referrer)
+    flash('Category updated successfully.', 'success')
+    return redirect(request.referrer)
+
+
+@app.post('/categories/delete/<id>')
 def categories_delete(id):
     user_id = session.get('user_id')
     if not user_id:
@@ -133,6 +151,19 @@ def categories_delete(id):
         return redirect(request.referrer)
     flash('Category deleted successfully.', 'success')
     return redirect(request.referrer)
+
+
+@app.get('/categories/edit/<id>')
+def categories_edit(id):
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect('/login')
+
+    category = db.fetch_category(user_id, id)
+    return render_template(
+        'auth/categories-edit.html',
+        category=category
+    )
 
 
 @app.get('/products')

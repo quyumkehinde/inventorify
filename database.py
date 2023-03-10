@@ -48,6 +48,25 @@ class Database():
             raise AlreadyExistError('Category already exist.')
         return category
 
+    def update_category(self, category_id, name, user_id):
+        try:
+            (self.session.query(Category)
+                .filter(Category.id == category_id)
+                .filter(Category.user_id == user_id)
+                .update({Category.name: name}))
+            self.save()
+        except IntegrityError:
+            self.session.rollback()
+            raise AlreadyExistError('Category already exist.')
+
+    def fetch_category(self, user_id, category_id):
+        return (
+            self.session.query(Category)
+                .filter(Category.id == category_id)
+                .filter(Category.user_id == user_id)
+                .first()
+        )
+
     def fetch_categories(self, user_id):
         return (
             self.session.query(Category)

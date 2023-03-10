@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="mt-6">
-                <button type='submit' class="p-2 bg-indigo-600 text-white text-sm rounded">Add Category</button>
+                <button type='submit' class="p-2 bg-blue-500 text-white text-sm rounded">Add Category</button>
             </div>
         </form>
         <div class='mt-16 lg:flex lg:items-center'>
@@ -79,13 +79,17 @@
                                     <h3 class="whitespace-nowrap py-4 text-sm text-gray-900">
                                         {{ category.name }}
                                     </h3>
-                                    <h3 class="relative whitespace-nowrap py-4 text-right text-sm">
-                                        <form method="post" action="/categories/{{category.id}}">
-                                            <button type="submit" class="text-red-600 inline-block">
+                                    <span class="relative whitespace-nowrap py-4 text-right text-sm">
+                                        <a href="/categories/edit/{{category.id}}" class="text-blue-500">
+                                            Edit
+                                        </a>
+                                        <form method="post" action="/categories/delete/{{category.id}}"
+                                            class="inline-block">
+                                            <button type="submit" class="text-red-600 inline-block ml-2">
                                                 Delete
                                             </button>
                                         </form>
-                                    </h3>
+                                    </span>
                                 </div>
                                 {% endfor %}
                             </div>
