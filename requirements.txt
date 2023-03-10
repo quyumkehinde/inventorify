@@ -3,4 +3,4 @@ python-dotenv
 SQLAlchemy==2.0.3
 webargs==8.2.0
 Werkzeug==2.2.3
-gunicorn
+gunicorn # for deployment purpose
