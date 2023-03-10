@@ -12,7 +12,7 @@ app = Flask(__name__)
 db = Database()
 load_dotenv()
 
-app.secret_key = os.getenv('SECRET_KEY', 'somesecretkey')
+app.secret_key = os.getenv('SECRET_KEY', 'some-secret-key')
 
 
 @app.get('/')
