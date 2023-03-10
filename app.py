@@ -22,7 +22,9 @@ def index():
 
 @app.get('/register')
 def register():
-    return render_template('register.j2')
+    if session.get('user_id'):
+        return redirect('/dashboard')
+    return render_template('register.html')
 
 
 @app.post('/register')
@@ -48,7 +50,9 @@ def register_post(data):
 
 @app.get('/login')
 def login():
-    return render_template('login.j2')
+    if session.get('user_id'):
+        return redirect('/dashboard')
+    return render_template('login.html')
 
 
 @app.post('/login')
